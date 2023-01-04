@@ -1,8 +1,6 @@
 #include <stdio.h>
 #include "udp.h"
-
 #include "message.h"
-
 #include "mfs.h"
 
 // client code
