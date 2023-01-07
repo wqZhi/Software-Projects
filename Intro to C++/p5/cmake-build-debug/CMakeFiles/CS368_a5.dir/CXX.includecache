@@ -1,0 +1,34 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/w/Coding/Clion/CS368 a5/Stock.h
+iostream
+-
+iomanip
+-
+string
+-
+cstdlib
+-
+
+/Users/w/Coding/Clion/CS368 a5/Stockholder.cpp
+string
+-
+map
+-
+Stockholder.h
+/Users/w/Coding/Clion/CS368 a5/Stockholder.h
+
+/Users/w/Coding/Clion/CS368 a5/Stockholder.h
+string
+-
+Stock.h
+/Users/w/Coding/Clion/CS368 a5/Stock.h
+map
+-
+

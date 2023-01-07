@@ -1,0 +1,4 @@
+customername 3
+Skim 1.00 NEAT
+Doogh 2.00 TALL
+Smoothie 4.50 NEAT

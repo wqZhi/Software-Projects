@@ -1,0 +1,70 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/w/Clion/CS368 a3/Diamond.h
+string
+-
+
+/Users/w/Clion/CS368 a3/Gold.h
+string
+-
+
+/Users/w/Clion/CS368 a3/Rock.h
+string
+-
+
+/Users/w/Clion/CS368 a3/RockMaker.h
+cstdlib
+-
+Rock.h
+/Users/w/Clion/CS368 a3/Rock.h
+Ruby.h
+/Users/w/Clion/CS368 a3/Ruby.h
+Gold.h
+/Users/w/Clion/CS368 a3/Gold.h
+Diamond.h
+/Users/w/Clion/CS368 a3/Diamond.h
+Sandstone.h
+/Users/w/Clion/CS368 a3/Sandstone.h
+
+/Users/w/Clion/CS368 a3/RockPile.cpp
+iostream
+-
+string
+-
+RockPile.h
+/Users/w/Clion/CS368 a3/RockPile.h
+
+/Users/w/Clion/CS368 a3/RockPile.h
+string
+-
+Rock.h
+/Users/w/Clion/CS368 a3/Rock.h
+
+/Users/w/Clion/CS368 a3/Ruby.h
+string
+-
+
+/Users/w/Clion/CS368 a3/Sandstone.h
+string
+-
+
+/Users/w/Clion/CS368 a3/main.cpp
+iostream
+-
+cstdlib
+-
+time.h
+-
+Rock.h
+/Users/w/Clion/CS368 a3/Rock.h
+RockPile.h
+/Users/w/Clion/CS368 a3/RockPile.h
+RockMaker.h
+/Users/w/Clion/CS368 a3/RockMaker.h
+

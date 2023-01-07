@@ -1,0 +1,38 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/w/Coding/Clion/cs368a4/Customer.cpp
+iostream
+-
+iomanip
+-
+Customer.h
+/Users/w/Coding/Clion/cs368a4/Customer.h
+Drink.h
+/Users/w/Coding/Clion/cs368a4/Drink.h
+
+/Users/w/Coding/Clion/cs368a4/Customer.h
+string
+-
+Drink.h
+/Users/w/Coding/Clion/cs368a4/Drink.h
+
+/Users/w/Coding/Clion/cs368a4/Drink.h
+string
+-
+
+/Users/w/Coding/Clion/cs368a4/main.cpp
+iostream
+-
+Customer.h
+/Users/w/Coding/Clion/cs368a4/Customer.h
+Drink.h
+/Users/w/Coding/Clion/cs368a4/Drink.h
+fstream
+-
+

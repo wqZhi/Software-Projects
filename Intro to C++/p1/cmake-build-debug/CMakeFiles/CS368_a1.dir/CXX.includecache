@@ -1,0 +1,24 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/w/Clion/CS368 a1/functions.cpp
+functions.h
+/Users/w/Clion/CS368 a1/functions.h
+cmath
+-
+
+/Users/w/Clion/CS368 a1/functions.h
+
+/Users/w/Clion/CS368 a1/main.cpp
+iostream
+-
+iomanip
+-
+functions.h
+/Users/w/Clion/CS368 a1/functions.h
+

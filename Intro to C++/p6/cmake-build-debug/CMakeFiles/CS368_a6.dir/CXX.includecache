@@ -1,0 +1,40 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/w/Coding/Clion/CS368 a6/IRPSSHierarchy.h
+
+/Users/w/Coding/Clion/CS368 a6/NorthAmericanMember.h
+vector
+-
+Punches.h
+/Users/w/Coding/Clion/CS368 a6/Punches.h
+
+/Users/w/Coding/Clion/CS368 a6/Punches.h
+exception
+-
+
+/Users/w/Coding/Clion/CS368 a6/SouthAmericanMember.h
+vector
+-
+Punches.h
+/Users/w/Coding/Clion/CS368 a6/Punches.h
+
+/Users/w/Coding/Clion/CS368 a6/main.cpp
+iostream
+-
+vector
+-
+NorthAmericanMember.h
+/Users/w/Coding/Clion/CS368 a6/NorthAmericanMember.h
+SouthAmericanMember.h
+/Users/w/Coding/Clion/CS368 a6/SouthAmericanMember.h
+IRPSSHierarchy.h
+/Users/w/Coding/Clion/CS368 a6/IRPSSHierarchy.h
+Punches.h
+/Users/w/Coding/Clion/CS368 a6/Punches.h
+
