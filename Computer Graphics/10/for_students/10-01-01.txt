@@ -1,0 +1,5 @@
+1. inputs: uniforms(the attributes of vertex and constant things)
+   outputs: vertex screen position and other attributes
+
+2. inputs: properties of the fragment determined by interpolating the “output attributes” from the vertices
+   outputs: properties of the fragment (color)

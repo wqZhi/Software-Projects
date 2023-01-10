@@ -1,0 +1,13 @@
+Where did the image come from? 
+    The image come from instructor which used in 10-08-01.js
+
+
+
+What lighting did you implement?
+    I implement specular lighting.
+
+
+
+Did you do anything beyond basic texure with diffuse lighting (explain)?
+    
+

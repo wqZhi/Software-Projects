@@ -1,0 +1,7 @@
+In this box, explain how you used each of the creation methods listed above
+
+I use the photoshop editor to modify the photo I took. I add a color filter on this photo. And also, I made the Exercise1.jpg by photoshop
+
+I get the normalMap, bumpMap and colorMap texture from the online source and its free from the polyhaven.com
+
+I took photo for a book from the library.

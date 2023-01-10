@@ -1,0 +1,2 @@
+Answer the question.
+    The diffuse light change as the camera moves and the specular light shows on the top of the sphere.

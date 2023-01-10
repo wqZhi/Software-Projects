@@ -1,0 +1,7 @@
+Please describe the buildings you created in this file 08-06-01.txt
+
+Explain how you made the buildings. 
+
+I created 2 types of buildings with different roof.
+    - Grhouse1 is a Rectangular cube. It has four windows in the fronts side and also a door. I make Grhouse1 by set the coordinate for each surface.
+    - Grhouse2 is a square cube, with tile texture for roof. It has 5 windows in the front side with a door. Also, in its left side and right side which also has 4 windows. I make it by set the coordinate for each surface

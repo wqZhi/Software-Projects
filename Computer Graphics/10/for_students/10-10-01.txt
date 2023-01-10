@@ -1,0 +1,9 @@
+Where did you get your shader? Describe the source and include a link.
+    I get from https://thebookofshaders.com/examples/.
+        under the subtitle patterns.
+
+
+In your own words, describe how this shader works. (3-5 sentences)
+    This shader generates striped wavy lines with sharp edges. The function mirrorTile let an edge be presented on the opposite side. 
+    The fucntion fillY makes the black and white colors of each section be presented in an interlaced manner.
+

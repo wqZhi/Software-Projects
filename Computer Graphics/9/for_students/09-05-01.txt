@@ -1,0 +1,5 @@
+Explain why the object you chose is a good use case for environment mapping.
+    The object is a sphere and I set its metalness be 1 and roughness be 0, so then its surface can refelct the skyMap.
+
+Explain where you got your textures and include any attributions here.
+    skyMap：https://threejs.org/manual/#en/backgrounds

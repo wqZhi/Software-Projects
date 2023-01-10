@@ -1,0 +1,2 @@
+Explain how you incorporated a material property map here
+    I use the metalnessMap prop by assignig a texture to it and set metalness equal to 1 and roughness: 0.5.

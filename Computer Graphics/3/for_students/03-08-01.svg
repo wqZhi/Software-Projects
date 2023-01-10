@@ -1,0 +1,33 @@
+<!-- here is a big, empty SVG! make it into something interesting! -->
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" height="600px" width="600px">
+    <g id="windmill">
+        <polygon points="100,600 150,400, 200,600" fill="brown" stroke-width="0" />
+        <rect transform="translate(80,330) rotate(45)" width="225" height="10" x="-10" y="-10" fill="black"/>
+        <rect transform="translate(220,330) rotate(45)" width="10" height="225" x="-10" y="-10" fill="black"/>
+
+        <rect transform="translate(66,316) rotate(45)" width="105" height="20" fill="gray"/>
+
+        <rect transform="translate(214, 294) rotate(45)" width="20" height="105" fill="gray"/>
+
+        <rect transform="translate(144, 405) rotate(45)" width="20" height="117" fill="gray"/>
+
+        <rect transform="translate(174,382) rotate(45)" width="120" height="20" fill="gray"/>
+
+        <!-- <path d="M 100 350 q 150 -300 300 0" stroke="blue" stroke-width="5" fill="none" /> -->
+        
+        <g id="group1" transform="translate(100,0)">
+            <polygon points="25,3 10,50 48,20 3,20 30,50" style="fill:lightgray" />
+        </g>
+
+        <g id="group1" transform="translate(200,100)">
+            <polygon points="25,3 10,50 48,20 3,20 30,50" style="fill:lightgray" />
+        </g>
+    </g>
+    <!-- the same two transformations, just in different order -->
+    <use transform="translate(280,0)" xlink:href="#windmill" />   
+
+    <path d="M 50 20 A 40 40 0 1 0 50 90 30 30 0 1 1 50 20" stroke="black" stroke-width="2" fill="yellow" transform="translate(50,40)" />
+
+
+</svg>
+

@@ -1,0 +1,3 @@
+Explain how you used a normal and bump map above
+    I create two objects one is for normal map and the other is for bump map and also the conbination color map with the bump
+    In the MeshStandardMaterial coding part, I import outside resources(texture) and assign normal texture to normalMap and bump map to bumpMap.
