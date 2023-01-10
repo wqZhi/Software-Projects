@@ -1,0 +1,25 @@
+Advanced Thing: 
+    Complex Behavior (#1)
+    Example: Drive/Follow GrDrone 0
+    The Drone-0 has a behavior with a state machine. The
+    Drone takes off, chooses one of the helipads, turns to go in that direction, flies there, and lands.
+
+    Complex Behavior (#2)
+    Example: Drive/Follow vehicles on the road
+    Both vehicles on the road can drive in a different speed and direction. The construction vehicles can move 
+    its components while driving. The vehicles can turning the head with a soomth behavior.
+
+    Complex Behavior (#3)
+    Example: construction vehicles
+    The construction vehicles can move complex behavior and can see that each components can moving in a logic order.
+
+    Complex scence (#1)
+    Example: water
+    There is water flows in the scence. This original code is from https://threejs.org/examples/webgl_shaders_ocean.html
+    And I modify it then it can be control by speed.
+
+    Complex scence (#2)
+    Example: snow
+    The snow idea was come from instructor WB6 solution. I adding this to my project to create a snowing Shanghai.
+    I modify the original code and make it to be an Gr object. The snow can be control by the speed(delta);
+    
