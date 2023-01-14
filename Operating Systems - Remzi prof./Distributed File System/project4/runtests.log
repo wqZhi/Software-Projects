@@ -8,18 +8,11 @@ build project using make
 **********************************************************************
 Trying to build project using make
 make
-gcc -fPIC -g -c -Wall fscli.c -o libmfs
-gcc -shared -Wl,-soname,libmfs.so -o libmfs.so libmfs -lc
-gcc fsserv.c -o server
-rm -f test.img
+gcc server.c udp.c -o server
+gcc -c -Wall -fpic libmfs.c udp.h
+gcc -shared -o libmfs.so libmfs.o
+gcc client.c udp.c -o client -L. -lmfs
 gcc mkfs.c -o mkfs
-./mkfs -f test.img
-total blocks        36
-  inodes            32 [size of each: 128]
-  data blocks       32
-layout details
-  inode bitmap address/len 1 [1]
-  data bitmap address/len  2 [1]
 
 
 test build PASSED
@@ -39,38 +32,10 @@ total blocks        36
 layout details
   inode bitmap address/len 1 [1]
   data bitmap address/len  2 [1]
-Starting server on port 8885
-/tmp/tmpapW8tr/p/server 8885 /home/cs537-1/handin/billyl/p4/test.img
-Hello From Server 
-portnum: 8885
-fileImage: /home/cs537-1/handin/billyl/p4/test.img 
-superBlock info
- inode_bitmap_addr: 1
- inode_bitmap_len: 1
- data_bitmap_addr: 2
- data_bitmap_len: 1
- inode_region_addr: 3
- inode_region_len: 1
- data_region_addr: 4
- data_region_len: 32
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Init)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Shutdown)]
-The Machine:: reply
-res: 0, rc = 0 
-client:: send message [MFS_Init], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Shutdown], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
+Starting server on port 9431
+/tmp/tmp6cMhAA/p/server 9431 /home/zye/private/course/cs537/p4/test.img
+server:: waiting...
+server:: read message [size:4148 mtype:8 name: inode:0]
 
 
 test shutdown PASSED
@@ -90,56 +55,14 @@ total blocks        36
 layout details
   inode bitmap address/len 1 [1]
   data bitmap address/len  2 [1]
-Starting server on port 9553
-/tmp/tmpapW8tr/p/server 9553 /home/cs537-1/handin/billyl/p4/test.img
-Hello From Server 
-portnum: 9553
-fileImage: /home/cs537-1/handin/billyl/p4/test.img 
-superBlock info
- inode_bitmap_addr: 1
- inode_bitmap_len: 1
- data_bitmap_addr: 2
- data_bitmap_len: 1
- inode_region_addr: 3
- inode_region_len: 1
- data_region_addr: 4
- data_region_len: 32
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Init)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Shutdown)]
-The Machine:: reply
-res: 0, rc = 0 
-client:: send message [MFS_Init], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(1)
-client:: send message [MFS_Shutdown], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
+Starting server on port 7015
+/tmp/tmp6cMhAA/p/server 7015 /home/zye/private/course/cs537/p4/test.img
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:test inode:0]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:test inode:0]
+server:: waiting...
+server:: read message [size:4148 mtype:8 name:test inode:0]
 
 
 test creat PASSED
@@ -159,76 +82,20 @@ total blocks        36
 layout details
   inode bitmap address/len 1 [1]
   data bitmap address/len  2 [1]
-Starting server on port 7158
-/tmp/tmpapW8tr/p/server 7158 /home/cs537-1/handin/billyl/p4/test.img
-Hello From Server 
-portnum: 7158
-fileImage: /home/cs537-1/handin/billyl/p4/test.img 
-superBlock info
- inode_bitmap_addr: 1
- inode_bitmap_len: 1
- data_bitmap_addr: 2
- data_bitmap_len: 1
- inode_region_addr: 3
- inode_region_len: 1
- data_region_addr: 4
- data_region_len: 32
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Init)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Write)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Read)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Shutdown)]
-The Machine:: reply
-res: 0, rc = 0 
-client:: send message [MFS_Init], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(1)
-client:: send message [MFS_Write], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Read], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-('START BLOCK 1\x00\x00\x00\x00\x00\x00\x00', '\x00\x00\x00\x00\x00\x00\x00\x00\x00END BLOCK 1')
-('START BLOCK 1\x00\x00\x00\x00\x00\x00\x00', '\x00\x00\x00\x00\x00\x00\x00\x00\x00END BLOCK 1')
-client:: send message [MFS_Shutdown], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
+Starting server on port 9201
+/tmp/tmp6cMhAA/p/server 9201 /home/zye/private/course/cs537/p4/test.img
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:test inode:0]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:test inode:0]
+server:: waiting...
+server:: read message [size:4148 mtype:4 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:5 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:8 name:test inode:1]
+('START BLOCK 1\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00', '\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00END BLOCK 1')
+('START BLOCK 1\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00', '\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00END BLOCK 1')
 
 
 test write PASSED
@@ -248,95 +115,22 @@ total blocks        36
 layout details
   inode bitmap address/len 1 [1]
   data bitmap address/len  2 [1]
-Starting server on port 6837
-/tmp/tmpapW8tr/p/server 6837 /home/cs537-1/handin/billyl/p4/test.img
-Hello From Server 
-portnum: 6837
-fileImage: /home/cs537-1/handin/billyl/p4/test.img 
-superBlock info
- inode_bitmap_addr: 1
- inode_bitmap_len: 1
- data_bitmap_addr: 2
- data_bitmap_len: 1
- inode_region_addr: 3
- inode_region_len: 1
- data_region_addr: 4
- data_region_len: 32
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Init)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Stat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Stat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Write)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Stat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Shutdown)]
-The Machine:: reply
-res: 0, rc = 0 
-client:: send message [MFS_Init], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(1)
-client:: send message [MFS_Stat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-inum:0, msize: 96, mtype: 0
-client:: send message [MFS_Stat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-inum:1, msize: 0, mtype: 1
-client:: send message [MFS_Write], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Stat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-inum:1, msize: 4096, mtype: 1
-client:: send message [MFS_Shutdown], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
+Starting server on port 9002
+/tmp/tmp6cMhAA/p/server 9002 /home/zye/private/course/cs537/p4/test.img
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:test inode:0]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:test inode:0]
+server:: waiting...
+server:: read message [size:4148 mtype:3 name:test inode:0]
+server:: waiting...
+server:: read message [size:4148 mtype:3 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:4 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:3 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:8 name:test inode:1]
 
 
 test stat PASSED
@@ -356,92 +150,22 @@ total blocks        36
 layout details
   inode bitmap address/len 1 [1]
   data bitmap address/len  2 [1]
-Starting server on port 8121
-/tmp/tmpapW8tr/p/server 8121 /home/cs537-1/handin/billyl/p4/test.img
-Hello From Server 
-portnum: 8121
-fileImage: /home/cs537-1/handin/billyl/p4/test.img 
-superBlock info
- inode_bitmap_addr: 1
- inode_bitmap_len: 1
- data_bitmap_addr: 2
- data_bitmap_len: 1
- inode_region_addr: 3
- inode_region_len: 1
- data_region_addr: 4
- data_region_len: 32
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Init)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Write)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Read)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Write)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Read)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Shutdown)]
-The Machine:: reply
-res: 0, rc = 0 
-client:: send message [MFS_Init], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(1)
-client:: send message [MFS_Write], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Read], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Write], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Read], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Shutdown], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
+Starting server on port 8285
+/tmp/tmp6cMhAA/p/server 8285 /home/zye/private/course/cs537/p4/test.img
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:test inode:0]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:test inode:0]
+server:: waiting...
+server:: read message [size:4148 mtype:4 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:5 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:4 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:5 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:8 name:test inode:1]
 
 
 test overwrite PASSED
@@ -455,602 +179,140 @@ Test maxfile
 write largest possible file
 
 **********************************************************************
-total blocks        148
-  inodes            140 [size of each: 128]
-  data blocks       140
+total blocks        39
+  inodes            128 [size of each: 128]
+  data blocks       32
 layout details
   inode bitmap address/len 1 [1]
   data bitmap address/len  2 [1]
-Starting server on port 8112
-/tmp/tmpapW8tr/p/server 8112 /home/cs537-1/handin/billyl/p4/test.img
-res: 0, rc = 0 
-client:: send message [MFS_Init], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(1)
-client:: send message [MFS_Write], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Write], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Write], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Write], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Write], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Write], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Write], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Write], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Write], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Write], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Write], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Write], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Write], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Write], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Write], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Write], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Write], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Write], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Write], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Write], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Write], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Write], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Write], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Write], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Write], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Write], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Write], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Write], rc: 0
-client:: wait for reHello From Server 
-portnum: 8112
-fileImage: /home/cs537-1/handin/billyl/p4/test.img 
-superBlock info
- inode_bitmap_addr: 1
- inode_bitmap_len: 1
- data_bitmap_addr: 2
- data_bitmap_len: 1
- inode_region_addr: 3
- inode_region_len: 5
- data_region_addr: 8
- data_region_len: 140
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Init)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Write)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Write)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Write)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Write)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Write)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Write)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Write)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Write)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Write)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Write)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Write)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Write)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Write)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Write)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Write)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Write)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Write)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Write)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Write)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Write)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Write)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Write)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Write)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Write)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Write)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Write)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Write)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Write)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Write)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Write)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Read)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Read)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Read)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read messply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Write], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Write], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Read], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Read], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Read], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Read], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Read], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Read], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Read], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Read], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Read], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Read], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Read], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Read], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Read], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Read], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Read], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Read], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Read], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Read], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Read], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Read], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Read], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Read], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Read], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Read], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Read], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Read], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Read], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Read], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Readage [size:4192 contents:(MFS_Read)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Read)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Read)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Read)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Read)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Read)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Read)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Read)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Read)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Read)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Read)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Read)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Read)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Read)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Read)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Read)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Read)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Read)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Read)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Read)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Read)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Read)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Read)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Read)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Read)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Read)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Read)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Shutdown)]
-The Machine:: reply
-], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Read], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Shutdown], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
+Starting server on port 5465
+/tmp/tmp6cMhAA/p/server 5465 /home/zye/private/course/cs537/p4/test.img
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:test inode:0]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:test inode:0]
+server:: waiting...
+server:: read message [size:4148 mtype:4 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:4 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:4 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:4 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:4 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:4 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:4 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:4 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:4 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:4 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:4 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:4 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:4 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:4 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:4 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:4 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:4 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:4 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:4 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:4 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:4 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:4 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:4 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:4 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:4 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:4 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:4 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:4 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:4 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:4 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:5 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:5 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:5 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:5 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:5 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:5 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:5 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:5 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:5 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:5 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:5 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:5 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:5 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:5 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:5 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:5 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:5 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:5 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:5 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:5 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:5 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:5 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:5 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:5 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:5 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:5 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:5 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:5 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:5 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:5 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:8 name:test inode:1]
 
 
 test maxfile PASSED
@@ -1064,622 +326,144 @@ Test maxfile2
 write more blocks than possible
 
 **********************************************************************
-total blocks        148
-  inodes            140 [size of each: 128]
-  data blocks       140
+total blocks        36
+  inodes            32 [size of each: 128]
+  data blocks       32
 layout details
   inode bitmap address/len 1 [1]
   data bitmap address/len  2 [1]
-Starting server on port 5854
-/tmp/tmpapW8tr/p/server 5854 /home/cs537-1/handin/billyl/p4/test.img
-res: 0, rc = 0 
-client:: send message [MFS_Init], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(1)
+Starting server on port 5319
+/tmp/tmp6cMhAA/p/server 5319 /home/zye/private/course/cs537/p4/test.img
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:test inode:0]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:test inode:0]
+server:: waiting...
+server:: read message [size:4148 mtype:4 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:4 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:4 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:4 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:4 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:4 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:4 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:4 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:4 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:4 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:4 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:4 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:4 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:4 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:4 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:4 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:4 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:4 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:4 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:4 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:4 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:4 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:4 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:4 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:4 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:4 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:4 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:4 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:4 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:4 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:5 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:5 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:5 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:5 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:5 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:5 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:5 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:5 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:5 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:5 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:5 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:5 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:5 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:5 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:5 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:5 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:5 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:5 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:5 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:5 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:5 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:5 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:5 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:5 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:5 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:5 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:5 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:5 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:5 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:5 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:5 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:8 name:test inode:1]
 31
-client:: send message [MFS_Write], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Write], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Write], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Write], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Write], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Write], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Write], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Write], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Write], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Write], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Write], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Write], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Write], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Write], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Write], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Write], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Write], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Write], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Write], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Write], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Write], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Write], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Write], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Write], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Write], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Write], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Write], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Write], rc: 0
-client:: wait forHello From Server 
-portnum: 5854
-fileImage: /home/cs537-1/handin/billyl/p4/test.img 
-superBlock info
- inode_bitmap_addr: 1
- inode_bitmap_len: 1
- data_bitmap_addr: 2
- data_bitmap_len: 1
- inode_region_addr: 3
- inode_region_len: 5
- data_region_addr: 8
- data_region_len: 140
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Init)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Write)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Write)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Write)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Write)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Write)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Write)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Write)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Write)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Write)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Write)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Write)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Write)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Write)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Write)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Write)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Write)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Write)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Write)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Write)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Write)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Write)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Write)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Write)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Write)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Write)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Write)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Write)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Write)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Write)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Write)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Write)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Read)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Read)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read mes reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Write], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Write], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
 write more than need
-client:: send message [MFS_Write], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(-1)
-client:: send message [MFS_Read], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Read], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Read], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Read], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Read], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Read], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Read], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Read], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Read], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Read], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Read], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Read], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Read], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Read], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Read], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Read], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Read], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Read], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Read], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Read], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Read], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Read], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Read], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Read], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Read], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Read], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Read], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-cliensage [size:4192 contents:(MFS_Read)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Read)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Read)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Read)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Read)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Read)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Read)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Read)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Read)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Read)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Read)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Read)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Read)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Read)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Read)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Read)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Read)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Read)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Read)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Read)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Read)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Read)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Read)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Read)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Read)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Read)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Read)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Read)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Read)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Shutdown)]
-The Machine:: reply
-t:: send message [MFS_Read], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Read], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Read], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Read], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(-1)
-client:: send message [MFS_Shutdown], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
 
 
 test maxfile2 PASSED
@@ -1699,56 +483,14 @@ total blocks        36
 layout details
   inode bitmap address/len 1 [1]
   data bitmap address/len  2 [1]
-Starting server on port 6856
-/tmp/tmpapW8tr/p/server 6856 /home/cs537-1/handin/billyl/p4/test.img
-Hello From Server 
-portnum: 6856
-fileImage: /home/cs537-1/handin/billyl/p4/test.img 
-superBlock info
- inode_bitmap_addr: 1
- inode_bitmap_len: 1
- data_bitmap_addr: 2
- data_bitmap_len: 1
- inode_region_addr: 3
- inode_region_len: 1
- data_region_addr: 4
- data_region_len: 32
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Init)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Shutdown)]
-The Machine:: reply
-res: 0, rc = 0 
-client:: send message [MFS_Init], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Shutdown], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
+Starting server on port 9097
+/tmp/tmp6cMhAA/p/server 9097 /home/zye/private/course/cs537/p4/test.img
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:. inode:0]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:.. inode:0]
+server:: waiting...
+server:: read message [size:4148 mtype:8 name:.. inode:0]
 
 
 test dir1 PASSED
@@ -1768,74 +510,18 @@ total blocks        36
 layout details
   inode bitmap address/len 1 [1]
   data bitmap address/len  2 [1]
-Starting server on port 9880
-/tmp/tmpapW8tr/p/server 9880 /home/cs537-1/handin/billyl/p4/test.img
-Hello From Server 
-portnum: 9880
-fileImage: /home/cs537-1/handin/billyl/p4/test.img 
-superBlock info
- inode_bitmap_addr: 1
- inode_bitmap_len: 1
- data_bitmap_addr: 2
- data_bitmap_len: 1
- inode_region_addr: 3
- inode_region_len: 1
- data_region_addr: 4
- data_region_len: 32
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Init)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Shutdown)]
-The Machine:: reply
-res: 0, rc = 0 
-client:: send message [MFS_Init], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(1)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(1)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Shutdown], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
+Starting server on port 8539
+/tmp/tmp6cMhAA/p/server 8539 /home/zye/private/course/cs537/p4/test.img
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:testdir inode:0]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:testdir inode:0]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:. inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:.. inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:8 name:.. inode:1]
 
 
 test dir2 PASSED
@@ -1855,65 +541,16 @@ total blocks        36
 layout details
   inode bitmap address/len 1 [1]
   data bitmap address/len  2 [1]
-Starting server on port 9904
-/tmp/tmpapW8tr/p/server 9904 /home/cs537-1/handin/billyl/p4/test.img
-Hello From Server 
-portnum: 9904
-fileImage: /home/cs537-1/handin/billyl/p4/test.img 
-superBlock info
- inode_bitmap_addr: 1
- inode_bitmap_len: 1
- data_bitmap_addr: 2
- data_bitmap_len: 1
- inode_region_addr: 3
- inode_region_len: 1
- data_region_addr: 4
- data_region_len: 32
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Init)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Shutdown)]
-The Machine:: reply
-res: 0, rc = 0 
-client:: send message [MFS_Init], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(1)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(-1)
-client:: send message [MFS_Shutdown], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
+Starting server on port 8141
+/tmp/tmp6cMhAA/p/server 8141 /home/zye/private/course/cs537/p4/test.img
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:testdir inode:0]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:testdir inode:0]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:testfile inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:8 name:testfile inode:1]
 
 
 test baddir PASSED
@@ -1933,65 +570,16 @@ total blocks        36
 layout details
   inode bitmap address/len 1 [1]
   data bitmap address/len  2 [1]
-Starting server on port 8716
-/tmp/tmpapW8tr/p/server 8716 /home/cs537-1/handin/billyl/p4/test.img
-Hello From Server 
-portnum: 8716
-fileImage: /home/cs537-1/handin/billyl/p4/test.img 
-superBlock info
- inode_bitmap_addr: 1
- inode_bitmap_len: 1
- data_bitmap_addr: 2
- data_bitmap_len: 1
- inode_region_addr: 3
- inode_region_len: 1
- data_region_addr: 4
- data_region_len: 32
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Init)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Shutdown)]
-The Machine:: reply
-res: 0, rc = 0 
-client:: send message [MFS_Init], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(1)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(-1)
-client:: send message [MFS_Shutdown], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
+Starting server on port 6960
+/tmp/tmp6cMhAA/p/server 6960 /home/zye/private/course/cs537/p4/test.img
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:testdir inode:0]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:testdir inode:0]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:testfile inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:8 name:testfile inode:1]
 
 
 test baddir2 PASSED
@@ -2011,74 +599,18 @@ total blocks        36
 layout details
   inode bitmap address/len 1 [1]
   data bitmap address/len  2 [1]
-Starting server on port 5461
-/tmp/tmpapW8tr/p/server 5461 /home/cs537-1/handin/billyl/p4/test.img
-Hello From Server 
-portnum: 5461
-fileImage: /home/cs537-1/handin/billyl/p4/test.img 
-superBlock info
- inode_bitmap_addr: 1
- inode_bitmap_len: 1
- data_bitmap_addr: 2
- data_bitmap_len: 1
- inode_region_addr: 3
- inode_region_len: 1
- data_region_addr: 4
- data_region_len: 32
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Init)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Unlink)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Shutdown)]
-The Machine:: reply
-res: 0, rc = 0 
-client:: send message [MFS_Init], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(1)
-client:: send message [MFS_Unlink], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(-1)
-client:: send message [MFS_Shutdown], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
+Starting server on port 8897
+/tmp/tmp6cMhAA/p/server 8897 /home/zye/private/course/cs537/p4/test.img
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:test inode:0]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:test inode:0]
+server:: waiting...
+server:: read message [size:4148 mtype:7 name:test inode:0]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:test inode:0]
+server:: waiting...
+server:: read message [size:4148 mtype:8 name:test inode:0]
 
 
 test unlink PASSED
@@ -2098,74 +630,18 @@ total blocks        36
 layout details
   inode bitmap address/len 1 [1]
   data bitmap address/len  2 [1]
-Starting server on port 6584
-/tmp/tmpapW8tr/p/server 6584 /home/cs537-1/handin/billyl/p4/test.img
-Hello From Server 
-portnum: 6584
-fileImage: /home/cs537-1/handin/billyl/p4/test.img 
-superBlock info
- inode_bitmap_addr: 1
- inode_bitmap_len: 1
- data_bitmap_addr: 2
- data_bitmap_len: 1
- inode_region_addr: 3
- inode_region_len: 1
- data_region_addr: 4
- data_region_len: 32
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Init)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Unlink)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Shutdown)]
-The Machine:: reply
-res: 0, rc = 0 
-client:: send message [MFS_Init], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(1)
-client:: send message [MFS_Unlink], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(-1)
-client:: send message [MFS_Shutdown], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
+Starting server on port 6432
+/tmp/tmp6cMhAA/p/server 6432 /home/zye/private/course/cs537/p4/test.img
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:test inode:0]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:test inode:0]
+server:: waiting...
+server:: read message [size:4148 mtype:7 name:test inode:0]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:test inode:0]
+server:: waiting...
+server:: read message [size:4148 mtype:8 name:test inode:0]
 
 
 test unlink2 PASSED
@@ -2185,101 +661,24 @@ total blocks        36
 layout details
   inode bitmap address/len 1 [1]
   data bitmap address/len  2 [1]
-Starting server on port 9631
-/tmp/tmpapW8tr/p/server 9631 /home/cs537-1/handin/billyl/p4/test.img
-Hello From Server 
-portnum: 9631
-fileImage: /home/cs537-1/handin/billyl/p4/test.img 
-superBlock info
- inode_bitmap_addr: 1
- inode_bitmap_len: 1
- data_bitmap_addr: 2
- data_bitmap_len: 1
- inode_region_addr: 3
- inode_region_len: 1
- data_region_addr: 4
- data_region_len: 32
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Init)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Unlink)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Unlink)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Unlink)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Shutdown)]
-The Machine:: reply
-res: 0, rc = 0 
-client:: send message [MFS_Init], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(1)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(3)
-client:: send message [MFS_Unlink], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(-1)
-client:: send message [MFS_Unlink], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Unlink], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Shutdown], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
+Starting server on port 8230
+/tmp/tmp6cMhAA/p/server 8230 /home/zye/private/course/cs537/p4/test.img
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:testdir inode:0]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:testdir inode:0]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:testfile inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:testfile inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:7 name:testdir inode:0]
+server:: waiting...
+server:: read message [size:4148 mtype:7 name:testfile inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:7 name:testdir inode:0]
+server:: waiting...
+server:: read message [size:4148 mtype:8 name:testdir inode:0]
 
 
 test empty PASSED
@@ -2299,47 +698,12 @@ total blocks        36
 layout details
   inode bitmap address/len 1 [1]
   data bitmap address/len  2 [1]
-Starting server on port 7871
-/tmp/tmpapW8tr/p/server 7871 /home/cs537-1/handin/billyl/p4/test.img
-Hello From Server 
-portnum: 7871
-fileImage: /home/cs537-1/handin/billyl/p4/test.img 
-superBlock info
- inode_bitmap_addr: 1
- inode_bitmap_len: 1
- data_bitmap_addr: 2
- data_bitmap_len: 1
- inode_region_addr: 3
- inode_region_len: 1
- data_region_addr: 4
- data_region_len: 32
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Init)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Shutdown)]
-The Machine:: reply
-res: 0, rc = 0 
-client:: send message [MFS_Init], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(-1)
-client:: send message [MFS_Shutdown], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
+Starting server on port 6538
+/tmp/tmp6cMhAA/p/server 6538 /home/zye/private/course/cs537/p4/test.img
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA inode:0]
+server:: waiting...
+server:: read message [size:4148 mtype:8 name:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA inode:0]
 
 
 test name PASSED
@@ -2359,124 +723,28 @@ total blocks        36
 layout details
   inode bitmap address/len 1 [1]
   data bitmap address/len  2 [1]
-Starting server on port 9810
-/tmp/tmpapW8tr/p/server 9810 /home/cs537-1/handin/billyl/p4/test.img
-Hello From Server 
-portnum: 9810
-fileImage: /home/cs537-1/handin/billyl/p4/test.img 
-superBlock info
- inode_bitmap_addr: 1
- inode_bitmap_len: 1
- data_bitmap_addr: 2
- data_bitmap_len: 1
- inode_region_addr: 3
- inode_region_len: 1
- data_region_addr: 4
- data_region_len: 32
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Init)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Write)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Read)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Shutdown)]
-The Machine:: reply
-res: 0, rc = 0 
-client:: send message [MFS_Init], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(1)
-client:: send message [MFS_Write], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(1)
-client:: send message [MFS_Read], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Shutdown], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-Starting server on port 9810
-/tmp/tmpapW8tr/p/server 9810 /home/cs537-1/handin/billyl/p4/test.img
-Hello From Server 
-portnum: 9810
-fileImage: /home/cs537-1/handin/billyl/p4/test.img 
-superBlock info
- inode_bitmap_addr: 1
- inode_bitmap_len: 1
- data_bitmap_addr: 2
- data_bitmap_len: 1
- inode_region_addr: 3
- inode_region_len: 1
- data_region_addr: 4
- data_region_len: 32
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Read)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Shutdown)]
-The Machine:: reply
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(1)
-client:: send message [MFS_Read], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Shutdown], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
+Starting server on port 5971
+/tmp/tmp6cMhAA/p/server 5971 /home/zye/private/course/cs537/p4/test.img
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:test inode:0]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:test inode:0]
+server:: waiting...
+server:: read message [size:4148 mtype:4 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:test inode:0]
+server:: waiting...
+server:: read message [size:4148 mtype:5 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:8 name:test inode:1]
+Starting server on port 5971
+/tmp/tmp6cMhAA/p/server 5971 /home/zye/private/course/cs537/p4/test.img
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:test inode:0]
+server:: waiting...
+server:: read message [size:4148 mtype:5 name:test inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:8 name:test inode:1]
 
 
 test persist PASSED
@@ -2490,2330 +758,524 @@ Test bigdir
 create a directory with 126 files
 
 **********************************************************************
-total blocks        148
-  inodes            140 [size of each: 128]
-  data blocks       140
+total blocks        39
+  inodes            128 [size of each: 128]
+  data blocks       32
 layout details
   inode bitmap address/len 1 [1]
   data bitmap address/len  2 [1]
-Starting server on port 5239
-/tmp/tmpapW8tr/p/server 5239 /home/cs537-1/handin/billyl/p4/test.img
-res: 0, rc = 0 
-client:: send message [MFS_Init], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(1)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reHello From Server 
-portnum: 5239
-fileImage: /home/cs537-1/handin/billyl/p4/test.img 
-superBlock info
- inode_bitmap_addr: 1
- inode_bitmap_len: 1
- data_bitmap_addr: 2
- data_bitmap_len: 1
- inode_region_addr: 3
- inode_region_len: 5
- data_region_addr: 8
- data_region_len: 140
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Init)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read mply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-cliessage [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read meent:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res:ssage [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read mes 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(3)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(4)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(5)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(6)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(7)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(8)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(9)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(10)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(11)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(12)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(13)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(14)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(15)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(16)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(17)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(18)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(19)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(20)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(21)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(22)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(23)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(24)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(25)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait fosage [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...r reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(26)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(27)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(28)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(29)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(30)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(31)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(32)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(33)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(34)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(35)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(36)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(37)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(38)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(39)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(40)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(41)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(42)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(43)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(44)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(45)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(46)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(47)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(48)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(49)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(50)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(51)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(52)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(53)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(54)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(55)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Ma7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(56)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(57)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(58)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(59)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(60)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(61)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(62)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(63)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(64)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(65)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(66)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(67)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(68)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(69)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(70)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(71)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(72)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(73)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(74)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(75)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(76)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(77)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(78)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(79)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(80)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(81)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(82)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(83)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(84)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(85)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = chine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [s4192 
-client:: got reply [size:4192 code:(86)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(87)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(88)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(89)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(90)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(91)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(92)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(93)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(94)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(95)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(96)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(97)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(98)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(99)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(100)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(101)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(102)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(103)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(104)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(105)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(106)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(107)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(108)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(109)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(110)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(111)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(112)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(113)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(114)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(115)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = ize:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Shutdown)]
-The Machine:: reply
-4192 
-client:: got reply [size:4192 code:(116)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(117)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(118)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(119)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(120)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(121)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(122)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(123)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(124)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(125)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(126)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(127)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(128)
-client:: send message [MFS_Shutdown], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
+Starting server on port 8307
+/tmp/tmp6cMhAA/p/server 8307 /home/zye/private/course/cs537/p4/test.img
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:testdir inode:0]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:testdir inode:0]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:0 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:1 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:2 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:3 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:4 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:5 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:6 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:7 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:8 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:9 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:10 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:11 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:12 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:13 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:14 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:15 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:16 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:17 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:18 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:19 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:20 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:21 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:22 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:23 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:24 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:25 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:26 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:27 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:28 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:29 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:30 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:31 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:32 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:33 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:34 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:35 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:36 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:37 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:38 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:39 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:40 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:41 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:42 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:43 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:44 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:45 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:46 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:47 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:48 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:49 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:50 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:51 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:52 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:53 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:54 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:55 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:56 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:57 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:58 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:59 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:60 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:61 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:62 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:63 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:64 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:65 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:66 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:67 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:68 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:69 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:70 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:71 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:72 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:73 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:74 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:75 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:76 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:77 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:78 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:79 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:80 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:81 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:82 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:83 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:84 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:85 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:86 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:87 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:88 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:89 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:90 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:91 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:92 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:93 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:94 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:95 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:96 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:97 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:98 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:99 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:100 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:101 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:102 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:103 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:104 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:105 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:106 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:107 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:108 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:109 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:110 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:111 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:112 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:113 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:114 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:115 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:116 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:117 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:118 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:119 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:120 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:121 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:122 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:123 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:124 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:125 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:0 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:1 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:2 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:3 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:4 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:5 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:6 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:7 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:8 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:9 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:10 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:11 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:12 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:13 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:14 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:15 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:16 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:17 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:18 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:19 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:20 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:21 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:22 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:23 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:24 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:25 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:26 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:27 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:28 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:29 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:30 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:31 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:32 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:33 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:34 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:35 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:36 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:37 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:38 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:39 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:40 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:41 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:42 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:43 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:44 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:45 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:46 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:47 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:48 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:49 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:50 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:51 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:52 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:53 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:54 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:55 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:56 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:57 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:58 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:59 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:60 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:61 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:62 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:63 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:64 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:65 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:66 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:67 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:68 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:69 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:70 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:71 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:72 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:73 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:74 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:75 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:76 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:77 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:78 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:79 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:80 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:81 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:82 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:83 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:84 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:85 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:86 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:87 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:88 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:89 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:90 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:91 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:92 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:93 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:94 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:95 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:96 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:97 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:98 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:99 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:100 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:101 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:102 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:103 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:104 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:105 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:106 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:107 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:108 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:109 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:110 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:111 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:112 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:113 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:114 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:115 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:116 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:117 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:118 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:119 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:120 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:121 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:122 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:123 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:124 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:125 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:8 name:125 inode:1]
 
 
 test bigdir PASSED
@@ -4827,179 +1289,46 @@ Test deep
 create many deeply nested directories
 
 **********************************************************************
-total blocks        36
-  inodes            32 [size of each: 128]
+total blocks        39
+  inodes            128 [size of each: 128]
   data blocks       32
 layout details
   inode bitmap address/len 1 [1]
   data bitmap address/len  2 [1]
-Starting server on port 6916
-/tmp/tmpapW8tr/p/server 6916 /home/cs537-1/handin/billyl/p4/test.img
-Hello From Server 
-portnum: 6916
-fileImage: /home/cs537-1/handin/billyl/p4/test.img 
-superBlock info
- inode_bitmap_addr: 1
- inode_bitmap_len: 1
- data_bitmap_addr: 2
- data_bitmap_len: 1
- inode_region_addr: 3
- inode_region_len: 1
- data_region_addr: 4
- data_region_len: 32
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Init)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Creat)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Lookup)]
-The Machine:: reply
-The Machine:: waiting...
-The Machine:: read message [size:4192 contents:(MFS_Shutdown)]
-The Machine:: reply
-res: 0, rc = 0 
-client:: send message [MFS_Init], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(1)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(3)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(5)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(7)
-client:: send message [MFS_Creat], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(9)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(1)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(3)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(5)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(7)
-client:: send message [MFS_Lookup], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(9)
-client:: send message [MFS_Shutdown], rc: 0
-client:: wait for reply...
-sd = 7
-res: 1
-, rc = 4192 
-client:: got reply [size:4192 code:(0)
+Starting server on port 8263
+/tmp/tmp6cMhAA/p/server 8263 /home/zye/private/course/cs537/p4/test.img
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:testdir inode:0]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:testdir inode:0]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:0 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:0 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:1 inode:2]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:1 inode:2]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:2 inode:3]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:2 inode:3]
+server:: waiting...
+server:: read message [size:4148 mtype:6 name:3 inode:4]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:3 inode:4]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:testdir inode:0]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:0 inode:1]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:1 inode:2]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:2 inode:3]
+server:: waiting...
+server:: read message [size:4148 mtype:2 name:3 inode:4]
+server:: waiting...
+server:: read message [size:4148 mtype:8 name:3 inode:4]
 
 
 test deep PASSED

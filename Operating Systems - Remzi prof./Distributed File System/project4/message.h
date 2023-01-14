@@ -1,14 +1,27 @@
-#include<stdio.h>
+#ifndef __message_h__
+#define __message_h__
 
+#define MFS_INIT (1)
+#define MFS_LOOKUP (2)
+#define MFS_STAT (3)
+#define MFS_WRITE (4)
+#define MFS_READ (5)
+#define MFS_CRET (6)
+#define MFS_UNLINK (7)
+#define MFS_SHUTDOWN (8)
 
-typedef struct message
-{
-    /* data */
-    int msg_code;
-    char msg[30];
-    char buf[4096];
-    int param1;
-    int param2;
-    int param3;
-    char charParam[48];
-} message;
+typedef struct {
+    int mtype;
+    int rc;
+
+    char name[28];
+    char buffer[4096];
+
+    int inum;
+    int nbytes;
+    int type;
+    int offset;
+
+} message_t;
+
+#endif // __message_h__
